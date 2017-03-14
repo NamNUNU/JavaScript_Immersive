@@ -2,8 +2,8 @@ var current_title = "";   // 현재 content 값을 저장하는 variable
 var json;
 var isLeft = true;
 
-document.querySelector(".btn .left").addEventListener("click", leftClickHandler);
-document.querySelector(".btn .right").addEventListener("click", rightClickHandler);
+document.querySelector(".btn .left").addEventListener("click", arrowButtonClick);
+document.querySelector(".btn .right").addEventListener("click", arrowButtonClick);
 
 sendAjax(firstLoad);
 
@@ -32,13 +32,12 @@ function firstLoad() {
 
 // 화살표 클릭시 처리 함수
 function arrowButtonClick() {
-    //var str = document.querySelector("#newsTemplate").innerHTML;
     var order = [];
     json.forEach(function(val) {
         order.push(val.title);
     });
 
-    if (isLeft) {
+    if(event.target.parentElement.className == "left"){
         if(order.indexOf(current_title) === 0){
           current_title = order[order.length - 1]
         }
@@ -81,7 +80,6 @@ function textMake(json) {
 
 // x 버튼 클릭시 동작하는 함수
 function removeClick() {
-    var str = document.querySelector("#newsTemplate").innerHTML;
     var element = document.querySelector("." + current_title);
     document.querySelector("." + current_title).innerHTML = "";
 
@@ -105,16 +103,6 @@ function removeClick() {
 function textClickHandler(e) {
     current_title = e.target.className;
     textMake(json);
-}
-
-function leftClickHandler() {
-    isLeft = true;
-    arrowButtonClick();
-}
-
-function rightClickHandler() {
-    isLeft = false;
-    arrowButtonClick();
 }
 
 function resetColor(title){
