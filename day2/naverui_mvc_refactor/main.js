@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", function(){
     sendAjax(firstLoad);
 });
 
-
-
 // Ajax 요청 function
 function sendAjax(func) {
     var oReq = new XMLHttpRequest();
@@ -21,16 +19,17 @@ function sendAjax(func) {
 // 페이지 로드시 첫번째로 실행되는 function
 function firstLoad() {
     var str = document.querySelector("#newsTemplate").innerHTML;
+
     json = JSON.parse(this.responseText);
     current_title = json[0].title;
 
     json.forEach(function(val) {
         document.querySelector("nav ul").innerHTML += '<li class="' + val.title + '">' + val.title + '</li>';
     });
-    resetColor(current_title);
-    document.querySelector("nav ul").addEventListener("click", textClickHandler);
-    textMake(json);
 
+    document.querySelector("nav ul").addEventListener("click", textClickHandler);
+    resetColor(current_title);
+    textMake(json);
 }
 
 // 화살표 클릭시 처리 함수
@@ -60,13 +59,11 @@ function arrowButtonClick() {
 
 // json을 이용하여 template을 완성하는 함수
 function textMake(json) {
-    resetColor(current_title);
-    var str = document.querySelector("#newsTemplate").innerHTML;
-
     if (json.length === 0) {
-        str = "";
+        var str = "";
         document.querySelector(".content").innerHTML = str
     } else {
+        var str = document.querySelector("#newsTemplate").innerHTML;
         json.forEach(function(val) {
             if (val.title === current_title) {
                 str = str.replace("{title}", val.title);
@@ -79,6 +76,7 @@ function textMake(json) {
         document.querySelector(".content").innerHTML = str;
         document.querySelector("button").addEventListener("click", removeClick)
     }
+    resetColor(current_title);
 }
 
 // x 버튼 클릭시 동작하는 함수
