@@ -1,14 +1,16 @@
 # JavaScript_Immersive
 
 ---
-### 목차
+## 목차
 
 - Day1(몸풀기) - 20170313  
 - Day2(DOM실습) - 20170314  
 - Day3(scope/closure/prototype) - 20170315
 
 ---
-### Day1(몸풀기) - 20170313
+## Day1(몸풀기) - 20170313
+
+### 실습내용
 1) 네이버 모든 메인 페이지 div 태그 중에 class name에 '-'나 언더바가 들어가는 태그의 개수를 출력하는 함수를 만들어보자   
 
 2) 1번 함수를 이용하여 section태그에 '-'나 언더바가 들어가는 태그의 개수를 출력하는 함수를 만들어보자   
@@ -18,7 +20,9 @@
 4) div 태그에 위와 같은 규칙이 적용되는 태그가 있는 경우 그 css클래스를 제거해 보자  
 
 ---
-### Day2(DOM 실습) - 20170314
+## Day2(DOM 실습) - 20170314
+
+### 실습내용
 1) Ajax를 이용하여 JSON 값을 받아온다   
 
 2) 네이버 메인의 뉴스 처럼 카테코리 클릭시 컨텐츠가 보이는 뷰를 만든다   
@@ -28,15 +32,44 @@
 4) 하이라이트 기능을 추가한다
 
 ---
-### Day3(scope/closure/prototype) - 20170315
+## Day3(scope/closure/prototype) - 20170315
+
+### 실습내용
 1) scope - var, let, const 등  
 
 2) closure - 함수가 종료된 후에도 부모 함수에 접근해서 변수를 사용할수 있다 (function scope의 한계를 극복하게 만드는 기능)
- * ClosureTest.html
- * ClosureTest2.js
+  * ClosureTest.html
+  * ClosureTest2.js
 
 3) prototype - 메모리 오버헤드 방지, 자바의 static과 유사한 개념(?), 객체 내부의 share 가능한 function을 만든다. 상속의 개념과도 닿아있음
- *  ObjectTest -  일반 객체와 생성자 객체
- *  ObjectTest2 -  prototype을 사용하여 function에 접근
+  *  ObjectTest.js -  일반 객체와 생성자 객체
+  *  ObjectTest2.js - new를 사용하여 객체 생성, prototype을 사용하여 function에 접근
+  *  ObjectTest3.js - new이외의 객체 사용법들
+  *  TodoList.js -  prototype에서 배운 내용을 활용하여 todo list를 작성
+  *  TodoList2.js - prototype을 생성하는 다른 함수를 사용하여 todo list를 refactoring
+
+### 이론
+#### 클로저(Closure)
+: 외부함수의 변수에 접근할수 있는 외부함수를 일컬으며, 스코프 체인(scope chain)으로 표현되기도 한다.  
+이에 따른 부수효과로는 외부함수가 리턴 된 다음에도 외부함수의 변수에 접근할수 있다는 것이다. 아래 코드를 보자.
+
+
+기본 예제  
+~~~
+function showName(firstName, lastName) {
+    var nameIntro = "Your name is ";
+    function makeFullName() {
+        return nameIntro + firstName + " " + lastName;
+    }
+    return makeFullName();
+}
+var name = showName("Michael", "Jackson"); // Your name is Michael Jackson
+name();
+~~~
+
+![클로저]("https://rahuldotout.files.wordpress.com/2011/05/closure-intro.gif")
+
+showName 함수가 실행되면 makeFullName을 리턴하게 된다. 이때, return 되는 값은 makeFullName함수의 몸체이다. 따라서 함수 몸체를 다시 실행해줘야 내부의 함수가 실행된다.  
+여기서 주목할 점은 자바 스크립트의 스코프는 변수를 찾을 때 내부에서 외부로 뻗어나간다는 것이다. 변수값이 내부함수에 없을때 외부함수까지 스코프가 확장됨으로 외부함수의 변수를 끌어와 사용이 가능하게 된다.
 
 ---
