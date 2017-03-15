@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <ul>
+      <li>apple</li>
+      <li>lemon</li>
+      <li>orange</li>
+      <li>strawberry</li>
+    </ul>
+    <section class="show"></section>
+    <script type="text/javascript">
+      (function(){
+        var list = document.querySelectorAll('li');
+        var show = document.querySelector('.show');
+
+        // //closure test1
+        // for(var i =0; i<list.length; i++){
+        //   // Dom이 다 로딩 되고 function이 실행되지만 Event의 함수는 콜백으로써 나중에 동작함
+        //   // 자식은 부모의 변수를 사용하는데 있어서서 참조하므로 원하는값이 나오지 않게 된다.
+        //   list[i].addEventListener('click', function(){
+        //     show.innerText = i + 1 + '번째 과일이 선택됐습니다';
+        //   })
+        // }
+
+        // closure problem solve
+        // 변수를 let으로 선언하면 block scope가 적용된다.
+        for(let i = 0; i<list.length; i++){
+          list[i].addEventListener('click',function(){
+            show.innerText = i+1+'번째 과일이 선택됐습니다';
+          })
+        }
+
+      })();
+    </script>
+  </body>
+</html>
