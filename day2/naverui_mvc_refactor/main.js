@@ -1,11 +1,14 @@
 var current_title = "";   // 현재 content 값을 저장하는 variable
 var json;
-var isLeft = true;
 
 document.querySelector(".btn .left").addEventListener("click", arrowButtonClick);
 document.querySelector(".btn .right").addEventListener("click", arrowButtonClick);
 
-sendAjax(firstLoad);
+document.addEventListener("DOMContentLoaded", function(){
+    sendAjax(firstLoad);
+});
+
+
 
 // Ajax 요청 function
 function sendAjax(func) {
@@ -99,12 +102,12 @@ function removeClick() {
     textMake(json)
 }
 
-
 function textClickHandler(e) {
     current_title = e.target.className;
     textMake(json);
 }
 
+//text highliter
 function resetColor(title){
     var liElement = document.querySelectorAll("nav>ul>li");
     liElement.forEach(function(val){
