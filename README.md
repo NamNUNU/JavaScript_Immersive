@@ -1,6 +1,5 @@
 # JavaScript_Immersive
 
----
 ## 목차
 
 - Day1(몸풀기) - 20170313  
@@ -34,19 +33,21 @@
 ---
 ## Day3(scope/closure/prototype) - 20170315
 
-### 실습내용
-1) scope - var, let, const 등  
-
-2) closure - 함수가 종료된 후에도 부모 함수에 접근해서 변수를 사용할수 있다 (function scope의 한계를 극복하게 만드는 기능)
-  * ClosureTest.html
-  * ClosureTest2.js
-
-3) prototype - 메모리 오버헤드 방지, 자바의 static과 유사한 개념(?), 객체 내부의 share 가능한 function을 만든다. 상속의 개념과도 닿아있음
+### 파일 목록
+  *  ClosureTest.html - 클로저 테스트
+  *  ClosureTest2.js - 클로저 테스트2
   *  ObjectTest.js -  일반 객체와 생성자 객체
   *  ObjectTest2.js - new를 사용하여 객체 생성, prototype을 사용하여 function에 접근
   *  ObjectTest3.js - new이외의 객체 사용법들
   *  TodoList.js -  prototype에서 배운 내용을 활용하여 todo list를 작성
   *  TodoList2.js - prototype을 생성하는 다른 함수를 사용하여 todo list를 refactoring
+
+### 실습내용
+1) scope - var, let, const 등  
+
+2) closure - 함수가 종료된 후에도 부모 함수에 접근해서 변수를 사용할수 있다 (function scope의 한계를 극복하게 만드는 기능)
+
+3) prototype - 메모리 오버헤드 방지, 자바의 static과 유사한 개념(?), 객체 내부의 share 가능한 function을 만든다. 상속의 개념과도 닿아있음
 
 ### 이론
 #### 클로저(Closure)
@@ -66,8 +67,6 @@ function showName(firstName, lastName) {
 var name = showName("Michael", "Jackson"); // Your name is Michael Jackson
 name();
 ~~~
-
-![클로저]("https://rahuldotout.files.wordpress.com/2011/05/closure-intro.gif")
 
 showName 함수가 실행되면 makeFullName을 리턴하게 된다. 이때, return 되는 값은 makeFullName함수의 몸체이다. 따라서 함수 몸체를 다시 실행해줘야 내부의 함수가 실행된다.  
 여기서 주목할 점은 자바 스크립트의 스코프는 변수를 찾을 때 내부에서 외부로 뻗어나간다는 것이다. 변수값이 내부함수에 없을때 외부함수까지 스코프가 확장됨으로 외부함수의 변수를 끌어와 사용이 가능하게 된다.
