@@ -31,6 +31,9 @@ function secondView(){
 
 function thirdView(){
     this.str = ""
+    this.buttonClick = function(event){
+      data.deleteNews()
+    }
 }
 
 var show = {
@@ -53,8 +56,8 @@ function dataModelObj(){
 }
 
 var dataMethod = {
-  delete : function(){
-
+  deleteNews : function(){
+    //show.showContent(data,view2,view3);
   },
 
   titleClick :function(title){
@@ -68,7 +71,12 @@ var dataMethod = {
   },
 
   navClick: function(destination){
-    //show.showContent(data,view2,view3);
+    if(destination==="left"){
+      this.cur_index===0 ? this.cur_index=this.json.length-1 : this.cur_index--;
+    }else{
+      this.cur_index===this.json.length-1 ? this.cur_index = 0 : this.cur_index++;
+    }
+    show.showContent(data,view2,view3);
   },
 
   getTitle : function(view){
@@ -116,3 +124,4 @@ document.addEventListener("DOMContentLoaded", function(){
 document.querySelector(".btn .left").addEventListener("click", view1.navClick)
 document.querySelector(".btn .right").addEventListener("click", view1.navClick)
 document.querySelector("nav>ul").addEventListener("click", view2.titleClick)
+document.querySelector("button").addEventListener("click", view3.buttonClick)
