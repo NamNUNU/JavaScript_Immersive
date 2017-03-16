@@ -1,6 +1,3 @@
-
-
-
 ////////////////////////////////
 // View 객체
 
@@ -88,10 +85,13 @@ var controllerObj = {
   getTitle : function(view){
     if(this.isEmpty()){ return "" }
 
-    var str = ""
+    var cur_index = data.cur_index+1
+    var str = '<li style="font-weight:bold">'+cur_index+'/'+data.json.length+'</li><br>'
+
     data.json.forEach(function(val){
         str += '<li class="'+val.title+'">{title}</li>'.replace('{title}',val.title);
     })
+
     return str;
   },
 
