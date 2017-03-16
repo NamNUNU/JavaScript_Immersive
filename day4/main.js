@@ -1,9 +1,6 @@
 var current_title = "";   // 현재 content 값을 저장하는 variable
-var data = new dataModelObj();
 
-var view1 = new firstView();
-var view2 = new secondView();
-var view3 = new thirdView();
+
 
 
 // Ajax 요청 function
@@ -15,45 +12,75 @@ function sendAjax(func) {
 
 }
 
-var show = {
-  showContent : function(data, secondView, thirdView){
-    data.getTitle(secondView);
-    document.querySelector("nav>ul").innerHTML = secondView.str;
-
-    data.getContent(thirdView);
-    console.log(thirdView.str);
-    document.querySelector(".content").innerHTML = thirdView.str;
-  }
-}
+////////////////////////////////
+// View 객체
 
 function firstView(){
     this.str = ""
+    this.navClick = function(event){
+      data.navClick(event.target.parentElement.className);
+    }
 }
 
 function secondView(){
     this.str = ""
+    this.titleClick = function(event){
+      data.titleClick(event.target.className);
+    }
 }
 
 function thirdView(){
     this.str = ""
 }
 
+var show = {
+  showContent : function(data, secondView, thirdView){
+    data.getTitle(secondView);
+    document.querySelector("nav>ul").innerHTML = secondView.str;
+
+    data.getContent(thirdView);
+    document.querySelector(".content").innerHTML = thirdView.str;
+  }
+}
+
+////////////////////////////////
+// Model 객체
+
 function dataModelObj(){
   this.json = [];
   this.cur_index = 0;
 
-  this.delete = function(){
+}
 
-  }
+var dataMethod = {
+  delete : function(){
 
-  this.getTitle = function(view){
+  },
+
+  titleClick :function(title){
+    for(var i = 0; i<this.json.length; i++){
+      if(this.json[i].title===title){
+        this.cur_index = i;
+        break;
+      }
+    }
+    show.showContent(data,view2,view3);
+  },
+
+  navClick: function(destination){
+    //show.showContent(data,view2,view3);
+  },
+
+  getTitle : function(view){
+    view.str = ""
     this.json.forEach(function(val){
-        view.str += "<li>{title}</li>".replace("{title}",val.title);
+        view.str += '<li class="'+val.title+'">{title}</li>'.replace('{title}',val.title);
     })
-  }
+  },
 
-  this.getContent = function(view){
+  getContent : function(view){
     var title = this.json[this.cur_index].title;
+    view.str = ""
     this.json.forEach(function(val){
         if(val.title===title){
           var template = document.querySelector("#newsTemplate").innerHTML;
@@ -62,18 +89,30 @@ function dataModelObj(){
         }
     })
 
-  }
+  },
 
-  this.setData = function(){
-    console.log("first data")
+  setData : function(){
     data.json = JSON.parse(this.responseText)
-    console.log(data.json);
-
     show.showContent(data,view2,view3);
   }
 
 }
 
+dataModelObj.prototype = dataMethod;
+var data = new dataModelObj();
+
+firstView.prototype= show;
+secondView.prototype = show;
+thirdView.prototype = show;
+
+var view1 = new firstView();
+var view2 = new secondView();
+var view3 = new thirdView();
+
 document.addEventListener("DOMContentLoaded", function(){
     sendAjax(data.setData);
 });
+
+document.querySelector(".btn .left").addEventListener("click", view1.navClick)
+document.querySelector(".btn .right").addEventListener("click", view1.navClick)
+document.querySelector("nav>ul").addEventListener("click", view2.titleClick)
