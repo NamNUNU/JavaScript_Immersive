@@ -38,3 +38,21 @@ var myHealth3 = Health2("달리기","23:10");
 Object.setPrototypeOf(myHealth3, healthObj);
 
 myHealth3.showHealth();
+
+
+// class를 이용하여 클래스 만들기, es6
+class Health3{
+  constructor(name, lastTime) {
+  this.name = name;
+  this.lastTime  = lastTime;
+  }
+
+  showHealth(){
+    console.log(" " + this.lastTime + " " + this.name + " ");
+  }
+}
+
+// create로 prototype객체를 만들어서 변수에 넣어준다, es5
+var myHealth = new Health3("달리기", "23:10");
+
+myHealth.showHealth();
