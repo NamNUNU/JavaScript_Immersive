@@ -27,7 +27,7 @@ var articleShow = {
     this.str = remocon.getContent();
     document.querySelector(".content").innerHTML = this.str;
     if(!controllerObj.isEmpty()){
-      document.querySelector("button").addEventListener("click", remocon.deleteClick);
+      document.querySelector("button").addEventListener("click", remocon.deleteClick.bind(data));
     }
   }
 }
@@ -41,16 +41,16 @@ var controllerObj = {
 
   //  삭제 버튼을 클릭 했을 때
   deleteClick : function(event){
-    data.removeJson(data.getCurrentIndex());
+    this.removeJson(this.getCurrentIndex());
 
-    var json = data.getJson();
-    var cur_index = data.getCurrentIndex();
+    var json = this.getJson();
+    var cur_index = this.getCurrentIndex();
 
     if(json.length !== 0){
       if(cur_index < 0){
         cur_index = 0;
       }else if(cur_index > json.length - 1){
-        data.setCurrentIndex(json.length - 1);
+        this.setCurrentIndex(json.length - 1);
       }
     }
 
@@ -61,12 +61,12 @@ var controllerObj = {
   // news title을 클릭 했을 때
   titleClick :function(event){
     var title = event.target.className;
-    var json = data.getJson();
-    var cur_index = data.getCurrentIndex();
+    var json = this.getJson();
+    var cur_index = this.getCurrentIndex();
 
     for(var i = 0; i<json.length; i++){
       if(json[i].title===title){
-        cur_index = i;
+        this.setCurrentIndex(i);
         break;
       }
     }
@@ -77,13 +77,14 @@ var controllerObj = {
   // navigation 버튼을 클릭 했을 때
   navClick: function(event){
     var destination = event.target.parentElement.className;
-    var json = data.getJson();
-    var cur_index = data.getCurrentIndex();
+
+    var json = this.getJson();
+    var cur_index = this.getCurrentIndex();
 
     if(destination==="left"){
-      cur_index === 0 ? data.setCurrentIndex(json.length-1) : data.setCurrentIndex(--cur_index);
+      cur_index === 0 ? this.setCurrentIndex(json.length-1) : this.setCurrentIndex(--cur_index);
     }else{
-      cur_index === json.length-1 ? data.setCurrentIndex(0) : data.setCurrentIndex(++cur_index);
+      cur_index === json.length-1 ? this.setCurrentIndex(0) : this.setCurrentIndex(++cur_index);
     }
 
     view2.showContent();
@@ -170,7 +171,7 @@ function dataModelObj(){
 
 }
 
-// 데이터 저장 & getter, setter prototype method
+// 데이터 저장 & getter,setter prototype method
 var dataMethod = {
 
   setData : function(){
@@ -211,6 +212,6 @@ document.addEventListener("DOMContentLoaded", function(){
     sendAjax(data.setData);
 });
 
-document.querySelector(".btn .left").addEventListener("click", remocon.navClick);
-document.querySelector(".btn .right").addEventListener("click", remocon.navClick);
-document.querySelector("nav>ul").addEventListener("click", remocon.titleClick);
+document.querySelector(".btn .left").addEventListener("click", remocon.navClick.bind(data));
+document.querySelector(".btn .right").addEventListener("click", remocon.navClick.bind(data));
+document.querySelector("nav>ul").addEventListener("click", remocon.titleClick.bind(data));
