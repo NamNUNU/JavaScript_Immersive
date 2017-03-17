@@ -41,14 +41,19 @@ var controllerObj = {
 
   //  삭제 버튼을 클릭 했을 때
   deleteClick : function(event){
-    data.json.splice(data.cur_index, 1);
-    if(data.json.length !== 0){
-      if(data.cur_index < 0){
-        data.cur_index = 0;
-      }else if(data.cur_index > data.json.length - 1){
-        data.cur_index = data.json.length - 1;
+    data.removeJson(data.getCurrentIndex());
+
+    var json = data.getJson();
+    var cur_index = data.getCurrentIndex();
+
+    if(json.length !== 0){
+      if(cur_index < 0){
+        cur_index = 0;
+      }else if(cur_index > json.length - 1){
+        data.setCurrentIndex(json.length - 1);
       }
     }
+
     view2.showContent();
     view3.showContent();
   },
@@ -56,10 +61,12 @@ var controllerObj = {
   // news title을 클릭 했을 때
   titleClick :function(event){
     var title = event.target.className;
-    var json = data.json;
+    var json = data.getJson();
+    var cur_index = data.getCurrentIndex();
+
     for(var i = 0; i<json.length; i++){
       if(json[i].title===title){
-        data.cur_index = i;
+        cur_index = i;
         break;
       }
     }
@@ -70,11 +77,13 @@ var controllerObj = {
   // navigation 버튼을 클릭 했을 때
   navClick: function(event){
     var destination = event.target.parentElement.className;
+    var json = data.getJson();
+    var cur_index = data.getCurrentIndex();
 
     if(destination==="left"){
-      data.cur_index===0 ? data.cur_index = data.json.length-1 : data.cur_index--;
+      cur_index === 0 ? data.setCurrentIndex(json.length-1) : data.setCurrentIndex(--cur_index);
     }else{
-      data.cur_index=== data.json.length-1 ? data.cur_index = 0 : data.cur_index++;
+      cur_index === json.length-1 ? data.setCurrentIndex(0) : data.setCurrentIndex(++cur_index);
     }
 
     view2.showContent();
@@ -84,11 +93,11 @@ var controllerObj = {
   // 기사 제목 받아오기
   getTitle : function(view){
     if(this.isEmpty()){ return "" }
+    var json = data.getJson();
+    var cur_index = data.getCurrentIndex()+1;
+    var str = '<li style="font-weight:bold">'+cur_index+'/'+json.length+'</li><br>'
 
-    var cur_index = data.cur_index+1
-    var str = '<li style="font-weight:bold">'+cur_index+'/'+data.json.length+'</li><br>'
-
-    data.json.forEach(function(val){
+    json.forEach(function(val){
         str += '<li class="'+val.title+'">{title}</li>'.replace('{title}',val.title);
     })
 
@@ -99,7 +108,9 @@ var controllerObj = {
   // 기사 받아오기
   getContent : function(){
     if(this.isEmpty()){ return "" }
-    var title = data.json[data.cur_index].title;
+    var json = data.getJson();
+    var cur_index = data.getCurrentIndex();
+    var title = json[cur_index].title;
     var str = ""
 
     data.json.forEach(function(val){
@@ -117,8 +128,9 @@ var controllerObj = {
   // 선택된 title 강조 효과 설정
   highlight : function(){
     if(this.isEmpty()){ return }
-
-    var title = data.json[data.cur_index].title;
+    var json = data.getJson();
+    var cur_index = data.getCurrentIndex();
+    var title = json[cur_index].title;
     var element = document.querySelectorAll("nav>ul>li");
 
     element.forEach(function(val){
@@ -133,7 +145,8 @@ var controllerObj = {
 
   // json이 비어있는지 확인
   isEmpty : function(){
-    return data.json.length===0 ? true : false;
+    var json = data.getJson();
+    return json.length===0 ? true : false;
   }
 
 }
@@ -157,13 +170,29 @@ function dataModelObj(){
 
 }
 
-// 데이터 저장 prototype method
+// 데이터 저장 & getter, setter prototype method
 var dataMethod = {
 
   setData : function(){
     data.json = JSON.parse(this.responseText)
     view2.showContent();
     view3.showContent();
+  },
+
+  removeJson : function(index){
+    this.json.splice(index, 1);
+  },
+
+  getJson : function(){
+    return this.json;
+  },
+
+  setCurrentIndex(index){
+    this.cur_index = index;
+  },
+
+  getCurrentIndex : function(){
+    return this.cur_index;
   }
 
 }

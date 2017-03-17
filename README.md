@@ -34,13 +34,10 @@
 ## Day3(scope/closure/prototype) - 20170315
 
 ### 파일 목록
-  *  ClosureTest.html - 클로저 테스트
-  *  ClosureTest2.js - 클로저 테스트2
-  *  ObjectTest.js -  일반 객체와 생성자 객체
-  *  ObjectTest2.js - new를 사용하여 객체 생성, prototype을 사용하여 function에 접근
-  *  ObjectTest3.js - new이외의 객체 사용법들
-  *  TodoList.js -  prototype에서 배운 내용을 활용하여 todo list를 작성
-  *  TodoList2.js - prototype을 생성하는 다른 함수를 사용하여 todo list를 refactoring
+  *  ClosureTest - 클로저 예제 테스트
+  *  ObjectTest -  일반 객체와 생성자 객체/new를 사용하여 객체 생성, prototype을 사용하여 function에 접근/new이외의 객체 사용법들
+  *  TodoList -  prototype에서 배운 내용을 활용하여 todo list를 작성, prototype을 생성하는 다른 함수를 사용하여 todo list를 refactoring
+  *  TodoListUi -  Todo List를 html을 이용하여 브라우저에서 출력되도록 작성
 
 ### 실습내용
 1) scope - var, let, const 등  
