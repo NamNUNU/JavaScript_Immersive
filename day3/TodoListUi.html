@@ -4,18 +4,18 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="TodoListUi.css">
     <title></title>
   </head>
-  <body>
+  <body class="bg-primary">
     <div id="back" class="container">
 
       <header>
         <div id="head" class="text-center">
-          <h1>TODO LIST</h1><br>
+          <h1 style="color:white">TODO LIST</h1><br>
         </div>
       </header>
+
 
       <div class="row">
         <div class="col-md-4"></div>
@@ -25,19 +25,31 @@
         <div class="col-md-4"></div>
       </div>
 
+      <div id="warning" class="text-center" style="color:red"></div>
+
       <div class="row text-center">
-        <button type="button" id="add" class="btn btn-primary" name="button">Add</button>
-        <button type="button" id="complete" class="btn btn-success" name="button">Complete</button>
-        <button type="button" id="show" class="btn btn-info" name="button">Show</button>
-      </div>
+        <button type="button" id="add" class="btn btn-success" name="button">Add</button>
+        <button type="button" id="complete" class="btn btn-warning" name="button">Complete</button>
+      </div><br><br>
+
+
 
       <div class="row">
-        <div id="todo" class="col-md-6 text_center">
+        <div class="col-md-2 text_center"></div>
 
+        <div class="col-md-3 text_center img-rounded" style="background-color:white; color:black">
+          <br><p class="text-center category">TODO List</p><hr>
+          <div id="todo"></div><br>
         </div>
-        <div  id="complete" class="col-md-6 text_center">
 
+        <div class="col-md-2 text_center"></div>
+
+        <div class="col-md-3 text_center img-rounded" style="background-color:white; color:black">
+          <br><p class="text-center category">Completed List</p><hr>
+          <div id="done"></div><br>
         </div>
+
+        <div class="col-md-2 text_center"></div>
       </div>
       <script type="text/javascript" src="TodoListUi.js"></script>
     </div>
