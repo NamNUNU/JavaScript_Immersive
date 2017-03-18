@@ -1,3 +1,12 @@
+
+
+var MENU = {
+  TOTAL_NEWS : 0,
+  MY_NEWS : 1
+}
+
+var state = MENU.TOTAL_NEWS;
+
 ////////////////////////////////
 // View 객체
 
@@ -8,11 +17,14 @@ function titleView(){
 }
 
 var titleShow = {
-  showContent : function(){
-    this.str = remocon.getTitle();
+
+  showContent : function(obj){
+    this.str = remocon.getTitle(obj);
     document.querySelector("nav>ul").innerHTML = this.str;
-    controllerObj.highlight();
+
+    remocon.highlight(obj);
   }
+
 }
 
 titleView.prototype = titleShow;
@@ -23,13 +35,25 @@ function articleView(){
 }
 
 var articleShow = {
-  showContent : function(){
-    this.str = remocon.getContent();
+
+  showContent : function(obj){
+    this.str = remocon.getContent(obj);
     document.querySelector(".content").innerHTML = this.str;
-    if(!controllerObj.isEmpty()){
-      document.querySelector("button").addEventListener("click", remocon.deleteClick.bind(data));
+
+    if(remocon.isEmpty(obj)){
+      return ;
+    }
+    this.addEvent(obj);
+  },
+
+  addEvent : function(obj){
+    if(obj===data){
+      document.querySelector("button").addEventListener("click", remocon.addClick.bind(data, mydata));
+    }else{
+      document.querySelector("button").addEventListener("click", remocon.deleteClick.bind(mydata));
     }
   }
+
 }
 
 articleView.prototype = articleShow;
@@ -39,10 +63,23 @@ articleView.prototype = articleShow;
 
 var controllerObj = {
 
+  addClick : function(myNewsObj, event){
+    var newsJson = this.getJson();
+    var newsIndex = this.getCurrentIndex();
+    var title = newsJson[newsIndex].title;
+    var myNewsJson = myNewsObj.getJson();
+
+    for(var i = 0; i<myNewsJson.length; i++){
+      if(myNewsJson[i].title===title){
+        return;
+      }
+    }
+    myNewsObj.addJson(newsJson[newsIndex]);
+  },
+
   //  삭제 버튼을 클릭 했을 때
   deleteClick : function(event){
     this.removeJson(this.getCurrentIndex());
-
     var json = this.getJson();
     var cur_index = this.getCurrentIndex();
 
@@ -54,8 +91,8 @@ var controllerObj = {
       }
     }
 
-    view2.showContent();
-    view3.showContent();
+    view2.showContent(this);
+    view3.showContent(this);
   },
 
   // news title을 클릭 했을 때
@@ -70,8 +107,8 @@ var controllerObj = {
         break;
       }
     }
-    view2.showContent();
-    view3.showContent();
+    view2.showContent(this);
+    view3.showContent(this);
   },
 
   // navigation 버튼을 클릭 했을 때
@@ -87,15 +124,32 @@ var controllerObj = {
       cur_index === json.length-1 ? this.setCurrentIndex(0) : this.setCurrentIndex(++cur_index);
     }
 
-    view2.showContent();
-    view3.showContent();
+    view2.showContent(this);
+    view3.showContent(this);
+  },
+
+  showClick: function(event){
+    this.setCurrentIndex(0);
+    document.querySelector("nav>ul").addEventListener("click", remocon.titleClick.bind(this));
+
+    controllerObj.setState(this);
+    view2.showContent(this);
+    view3.showContent(this);
+  },
+
+  setState : function(obj){
+    if(obj===data){
+      state = MENU.TOTAL_NEWS;
+    }else if(obj===mydata){
+      state = MENU.MY_NEWS;
+    }
   },
 
   // 기사 제목 받아오기
-  getTitle : function(view){
-    if(this.isEmpty()){ return "" }
-    var json = data.getJson();
-    var cur_index = data.getCurrentIndex()+1;
+  getTitle : function(obj){
+    if(this.isEmpty(obj)){ return "" }
+    var json = obj.getJson();
+    var cur_index = obj.getCurrentIndex()+1;
     var str = '<li style="font-weight:bold">'+cur_index+'/'+json.length+'</li><br>'
 
     json.forEach(function(val){
@@ -107,18 +161,20 @@ var controllerObj = {
 
 
   // 기사 받아오기
-  getContent : function(){
-    if(this.isEmpty()){ return "" }
-    var json = data.getJson();
-    var cur_index = data.getCurrentIndex();
+  getContent : function(obj){
+    if(this.isEmpty(obj)){ return "" }
+    var json = obj.getJson();
+    var cur_index = obj.getCurrentIndex();
     var title = json[cur_index].title;
     var str = ""
 
-    data.json.forEach(function(val){
+    json.forEach(function(val){
         if(val.title===title){
           var template = document.querySelector("#newsTemplate").innerHTML;
           var newsList = val.newslist.reduce(function(a, b){return a+"<li>"+b+"</li>"},"");
           str = template.replace("{title}",val.title).replace("{imgurl}",val.imgurl).replace("{newsList}",newsList);
+
+          state === MENU.TOTAL_NEWS ? str = str.replace("X","구독") : str = str.replace("X","구독 해제");
         }
     })
 
@@ -127,10 +183,10 @@ var controllerObj = {
   },
 
   // 선택된 title 강조 효과 설정
-  highlight : function(){
-    if(this.isEmpty()){ return }
-    var json = data.getJson();
-    var cur_index = data.getCurrentIndex();
+  highlight : function(obj){
+    if(this.isEmpty(obj)){ return }
+    var json = obj.getJson();
+    var cur_index = obj.getCurrentIndex();
     var title = json[cur_index].title;
     var element = document.querySelectorAll("nav>ul>li");
 
@@ -145,8 +201,8 @@ var controllerObj = {
   },
 
   // json이 비어있는지 확인
-  isEmpty : function(){
-    var json = data.getJson();
+  isEmpty : function(obj){
+    var json = obj.getJson();
     return json.length===0 ? true : false;
   }
 
@@ -156,62 +212,80 @@ var controllerObj = {
 // Model 객체
 
 // Ajax 요청 function
-function sendAjax(func) {
+function sendAjax(obj) {
     var oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", func);
+    oReq.addEventListener("load", function(){
+      var json = JSON.parse(oReq.responseText)
+      obj.setData(json)
+    });
     oReq.open("GET", "./data/newslist.json");
     oReq.send();
 
 }
 
+
 // 데이터 저장 obj
-function dataModelObj(){
-  this.json = [];
-  this.cur_index = 0;
+function makeDataObj(){
+  var json = [];
+  var cur_index = 0;
 
-}
+  function dataModelObj(){
 
-// 데이터 저장 & getter,setter prototype method
-var dataMethod = {
-
-  setData : function(){
-    data.json = JSON.parse(this.responseText)
-    view2.showContent();
-    view3.showContent();
-  },
-
-  removeJson : function(index){
-    this.json.splice(index, 1);
-  },
-
-  getJson : function(){
-    return this.json;
-  },
-
-  setCurrentIndex(index){
-    this.cur_index = index;
-  },
-
-  getCurrentIndex : function(){
-    return this.cur_index;
   }
 
-}
+  // 데이터 저장 & getter,setter prototype method
+  dataModelObj.prototype = {
 
-dataModelObj.prototype = dataMethod;
+    setData : function(jsondata){
+      json = jsondata;
+      view2.showContent(this);
+      view3.showContent(this);
+    },
+
+    addJson : function(data_obj){
+      json.push(data_obj);
+    },
+
+    removeJson : function(index){
+      json.splice(index, 1);
+    },
+
+    getJson : function(){
+      return json;
+    },
+
+    setCurrentIndex(index){
+      cur_index = index;
+    },
+
+    getCurrentIndex : function(){
+      return cur_index;
+    }
+
+  }
+
+  return dataModelObj;
+};
+
+var DataObj = makeDataObj();
+var MyDataObj = makeDataObj();
 
 ////////////////////////////////
 // Init
 
-var data = new dataModelObj();
+var data = new DataObj();
+var mydata = new MyDataObj();
+
 var view2 = new titleView();
 var view3 = new articleView();
 var remocon = Object.create(controllerObj);
 
 document.addEventListener("DOMContentLoaded", function(){
-    sendAjax(data.setData);
+    sendAjax(data);
+    document.querySelector("nav>ul").addEventListener("click", remocon.titleClick.bind(data));
 });
 
 document.querySelector(".btn .left").addEventListener("click", remocon.navClick.bind(data));
 document.querySelector(".btn .right").addEventListener("click", remocon.navClick.bind(data));
-document.querySelector("nav>ul").addEventListener("click", remocon.titleClick.bind(data));
+document.querySelector("#totalnews").addEventListener("click", remocon.showClick.bind(data));
+document.querySelector("#mynews").addEventListener("click", remocon.showClick.bind(mydata));

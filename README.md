@@ -80,3 +80,51 @@ showName 함수가 실행되면 makeFullName을 리턴하게 된다. 이때, ret
 
 ### 실습내용
 1) day2에서 제작한 뉴스 리스트를 object와 prototype을 적용한 MVC 패턴으로 만들어 본다
+
+---
+
+## Day5(MVC pattern, refactoring) - 20170317
+
+### 실습내용
+1) day4에서 만든 MVC패턴 뉴스 리스트를 리팩토링
+
+### 이론
+#### 네임 스페이스  
+
+~~~
+var = namespace ={};
+
+namespace.model = {};
+namespace.view = {};
+namespace.controller = {};
+~~~  
+
+namespace.model.fistView~~~ 이런식으로 접근한다. 이럴 떄 namespace안에 다 들어가있으므로 접근과 관리가 용이하다.
+
+#### private 변수를 가진 객체 생성
+
+~~~
+
+var dataObjFn = (function() {
+
+   var json = ["aaaa"];
+
+   function dataModelObj() {
+
+   }
+
+   dataModelObj.prototype = {
+       getName : function() {
+           return json;
+       }
+   }
+
+   return dataModelObj;
+
+})();
+
+var dd = new dataObjFn();
+
+~~~
+
+클로저를 이용하여 객체를 생성한다.
