@@ -20,7 +20,7 @@
 
 ~~~
 ex)
-Communication update
+Update communication Function
 
 1) Add Bluetooth BLE 4.0 service
 2) Remove WiFi Module
@@ -45,7 +45,7 @@ Communication update
 - Update : 폴더 단위 파일 변경
 - Add : 파일이나 기능 추가
 - Remove : 파일이나 기능 제거
-- Modify : 파일이나 기능 수정
+- Modify : 파일이나 기능, 내용 수정
 
 #### 본문
 - 1,2,3 등의 개조식으로 표현
