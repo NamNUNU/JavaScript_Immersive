@@ -216,6 +216,12 @@ dispatcher는 'afterMoveButton'이라는 행위에 해당하는, 이미 등록�
 ---
 ## Day7(Git) - 20170321
 
+### CSS
+
+#### 웹 디자인의 순서
+1. 구조를 잡는다 (배치)  
+2. 스타일을 입혀준다
+
 ### Git
 
 #### Git review
@@ -272,3 +278,10 @@ commit은 root을 제외하고 모두 부모가 있다.
   * 안하는 날도 있을수 있다  
   * 못하면 진도를 누적하지 않는다.  
   * 미션을 주고 달성하도록 노력한다.  
+
+
+  ---
+
+  https://www.gitignore.io/
+  에서 원하는 언어를 검색 하여 vim .gitignore 파일을 생성 후, 내용을 복사해주면
+  dependancy나 패키지, 모듈을 생략하고 push 해준다

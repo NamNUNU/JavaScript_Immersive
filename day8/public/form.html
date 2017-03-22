@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    this is form html
+    <form action="/send_email" method="post">
+      email:<input type="text" name="email"><br>
+    </form>
+
+    <button class="ajaxsend">ajaxsend</button>
+    <div class="result"></div>
+
+    <script type="text/javascript">
+      document.querySelector('.ajaxsend').addEventListener("click",function(){
+        var inputdata = document.forms[0].elements[0].value;
+        sendAjax('http://127.0.0.1:3000/ajax_send_email', inputdata);
+      })
+
+      function sendAjax(url, data){
+        var data = {'email' : data};
+        data =  JSON.stringify(data);
+
+        var oReq = new XMLHttpRequest();
+        oReq.open('POST', url);
+        oReq.setRequestHeader('Content-Type', "application/json")// json 형태로 보낸다
+        oReq.send(data);
+        oReq.addEventListener('load', function(){
+          var result = JSON.parse(oReq.responseText);
+          document.querySelector('.result').innerHTML = result.name;
+        })
+      }
+    </script>
+  </body>
+</html>
