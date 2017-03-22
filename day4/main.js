@@ -285,7 +285,6 @@ document.addEventListener("DOMContentLoaded", function(){
     document.querySelector("nav>ul").addEventListener("click", remocon.titleClick.bind(data));
 });
 
-document.querySelector(".btn .left").addEventListener("click", remocon.navClick.bind(data));
-document.querySelector(".btn .right").addEventListener("click", remocon.navClick.bind(data));
+document.querySelector(".btn").addEventListener("click", remocon.navClick.bind(data));
 document.querySelector("#totalnews").addEventListener("click", remocon.showClick.bind(data));
 document.querySelector("#mynews").addEventListener("click", remocon.showClick.bind(mydata));
