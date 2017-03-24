@@ -173,7 +173,7 @@ ns.controller = {
 
 document.addEventListener("DOMContentLoaded",function(){
   const cardView =  Object.assign(Object.create(ns.view.card),{});
-  const articleView =  Object.assign(Object.create(ns.view.article),{});
+  const articleView =  Object.assign(Object.create(ns.view.article),{})
   const titleView =  Object.assign(Object.create(ns.view.title),{});
   const controller = Object.assign(Object.create(ns.controller),{
     cardView : cardView,

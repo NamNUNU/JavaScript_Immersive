@@ -49,7 +49,10 @@ header > ul > li {
 header > .btn {
 	float: right;
 	font-size: 1.2rem;
+<<<<<<< HEAD
 	text-align: right;
+=======
+>>>>>>> 1c7ed80a2bf6d97558da14beb68e47bea8012c87
 }
 
 .left, .right {
