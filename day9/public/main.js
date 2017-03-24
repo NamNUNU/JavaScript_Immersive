@@ -218,7 +218,7 @@ function sendAjax(obj) {
       var json = JSON.parse(oReq.responseText)
       obj.setData(json)
     });
-    oReq.open("GET", "./data/newslist.json");
+    oReq.open("GET", "http://127.0.0.1:3000/send_ajax");
     oReq.send();
 
 }

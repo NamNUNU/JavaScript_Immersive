@@ -147,6 +147,8 @@ namespace.model.fistView~~~ 이런식으로 접근한다. 이럴 떄 namespace�
 
 #### private 변수를 가진 객체 생성
 
+Module pattern
+
 ~~~
 
 var dataObjFn = (function() {
@@ -172,3 +174,119 @@ var dd = new dataObjFn();
 ~~~
 
 클로저를 이용하여 객체를 생성한다.
+
+---
+
+## Day6(MVC pattern, refactoring) - 20170320
+
+### 실습 내용
+
+### 이론
+
+#### MVC
+
+  * View - View 자신의 변화에 집중, 다른 View나 접근을 자제
+  * Model - 데이터의 getter, setter로 역할 끝. view에 직접적인 접근을 자제
+  * Controller - VIEW나 MODEL의 변화에 따라 해야할 일을 등록
+  * Dispatcher - 변화가 발생시 미리 가지고 있는 정보를 토대로, 필요한 일을 실행시킴
+
+#### 옵저버 패턴(Observer Pattern)
+
+: View의 이벤트를 등록하여, 호출이 되면 컨트롤러에 알림. MVC간의 결합도를 낮춤
+
+~~~
+ns.dispatcher.emit(
+  {'type' : "afterMoveButton"}, [direction]
+  )
+~~~
+
+dispatcher는 'afterMoveButton'이라는 행위에 해당하는, 이미 등록된 콜백 함수를 실행
+
+아래는 dispatcher에 이미 등록된 콜백 함수
+
+~~~
+"autoMoveButton" : fucntion(direction){
+  const nextOrder = this._getNextOrder(direction);
+  this.model.changeCurrentNew(nextOrder);
+}.bind(this)
+~~~
+
+즉, 어딘가(제 3의 공간)에 콜백함수를 등록하여 사용하는 것이라고 할 수 있다.
+
+---
+## Day7(Git) - 20170321
+
+### CSS
+
+#### 웹 디자인의 순서
+1. 구조를 잡는다 (배치)  
+2. 스타일을 입혀준다
+
+### Git
+
+#### Git review
+
+Git의 가장 작은 저장단위는 commit이다.
+commit은 SHA-1으로 인덱싱(id)을 한다.
+SHA-1 알파벳으로 16자리로 겹치지 않는 난수를 만들어낸다.
+commit은 root을 제외하고 모두 부모가 있다.
+
+#### 저장소
+  * 작업 디렉토리 - 사용자가 작업을 하는 공간
+  * 인덱스 - stage와 동일,  로컬 저장소로 가기 전의 공간, 준비 구역
+  * 로컬 저장소
+  * 원격 저장소
+
+#### 프로젝트 설정
+  * git config --global --list : 현재 상태를 보여준다
+  * git config --global user.name "이름" : 사용자 이름을 변경, "이름"을 생략하면 현재 저장된 이름이 나온다.
+  * git config --global
+  * git config --global alias."줄인 명령어" "타겟 명령어" : 커스텀 명령어를 설정한다.
+
+#### 명령어
+
+  * git init : 로컬 저장소 생성  
+  * git clone : 원격저장소를 로컬저장소로 복사함  
+  * git add : work space의 내용을 stage에 업로드  
+  * git commit : stage에 내용을 로컬 저장소에 저장, .git 폴더가 생성된다. git 폴더는 로컬 저장소 자체라고 생각하면 된다.  
+  * git push :  로컬 저장소의 내용을 원격 저장소에 복사한다.
+  * git fetch : 원격 저장소의 내용을 로컬 저장소에 복사한다.
+  * git merge : 로컬저장소와 work space의 내용을 합쳐준다. 작업이 끝난후 부모가 2개가 된다.
+  * git pull :  fetch + merge이다.
+  * git checkout : 로컬 저장소의 내용을 그대로 꺼내온다.
+  * git rebase : merge와 반대의 개념, 자신을 들어서 상태방에게 얹어준다. 깔끔해지지만 충돌할 가능성이 높다. 작업이 끝난후 부모가 1개가 된다
+  * git cherry-pick : commit 하나를 떼서 붙임, 전체중에서 하나만 가져옴
+  * git revert : commit의 흔적을 남기고, 원하는 곳으로 되돌린다.
+  * git reset --hard : commit의 흔적을 지우고, 원하는 곳으로 되돌린다.
+  * git rebase -i HEAD~ : commit의 순서 조정과 삭제를 마음대로 편집가능
+  * git push --set-upstream origin aa : origin을 등록해줌
+  * cat .git/config : 현재 git 설정 보기
+  * git rm --cached 파일이름 : 해당 파일을 스테이지에서 내림
+
+#### 용어
+
+  * HEAD - 현재 사용하고 있는 브랜치, 주로 스타로 표시를 한다. checkout으로 바뀐다.
+  * Branch - 커밋의 주소값을 가지고 있는 값
+
+
+### 오늘의 팁  - TIL(Today I Learned)
+내가 오늘 배운 내용을 커밋한다. 굳이 소스 코드가 아니어도 상관없다.  
+
+#### 의도적 TIL
+  * developed by me  
+  * 아주 긴 시간을 목표로 잡는다.  
+  * 안하는 날도 있을수 있다  
+  * 못하면 진도를 누적하지 않는다.  
+  * 미션을 주고 달성하도록 노력한다.  
+
+
+  ---
+## Day8(NodeJS) - 2017022
+
+### 오늘의 팁 - 모듈을 제외하고 git에 push 하기
+  https://www.gitignore.io/
+  에서 원하는 언어를 검색 하여 vim .gitignore 파일을 생성 후, 내용을 복사해주면
+  dependancy나 패키지, 모듈을 생략하고 push 해준다
+
+  ---
+## Day9(MVC news list with back end) - 2017023

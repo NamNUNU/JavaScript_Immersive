@@ -3,6 +3,22 @@ div,header,ul,li,section,nav,footer,h1,h2,h3,h4 {margin:0;padding:0;}
 li { list-style: none; }
 a { text-decoration: none;}
 
+.card > ul > li{
+	border: 0.1px solid #cccaca;
+	width: 200px;
+	height: 100px;
+	float: right;
+	border-collapse: collapse;
+	box-sizing: border-box;
+}
+
+img {
+	width: 200px;
+	height: 100px;
+	overflow: hidden;
+
+}
+
 header,.mainArea > nav, .mainArea > .content, .newsList > ul{
 	padding:10px;
 	border: 1px solid #cccaca;
@@ -33,6 +49,7 @@ header > ul > li {
 header > .btn {
 	float: right;
 	font-size: 1.2rem;
+	text-align: right;
 }
 
 .left, .right {
