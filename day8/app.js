@@ -52,5 +52,4 @@ app.post('/ajax_send_email', function(req, res){
     }
     res.json(responseData)
   });
-
 });

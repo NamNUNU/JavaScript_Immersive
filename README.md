@@ -281,7 +281,12 @@ commit은 root을 제외하고 모두 부모가 있다.
 
 
   ---
+## Day8(NodeJS) - 2017022
 
+### 오늘의 팁 - 모듈을 제외하고 git에 push 하기
   https://www.gitignore.io/
   에서 원하는 언어를 검색 하여 vim .gitignore 파일을 생성 후, 내용을 복사해주면
   dependancy나 패키지, 모듈을 생략하고 push 해준다
+
+  ---
+## Day9(MVC news list with back end) - 2017023
